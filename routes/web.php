@@ -14,3 +14,6 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::resource('Embarazadas','EmbaradasController');
+Route::resource('Puerperas','PuerperasController');
+Route::get('DetalleEmbarazada/{expediente}','EmbaradasController@detalle');
