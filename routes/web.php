@@ -17,4 +17,8 @@ Route::resource('Puerperas','PuerperasController');
 Route::get('DetalleEmbarazada/{expediente}','EmbaradasController@detalle');
 Route::get('Riesgo','EmbaradasController@riesgo');
 Route::get('Edad/{from}/{to}','EmbaradasController@edad');
-Route::get('Embarazadas/Municipio/{}','EmbaradasController@municipio');
+Route::get('Embarazadas/Municipio/{municipio}','EmbaradasController@municipio');
+//retornar todos los municipios que se encuentra en la tabla tembarzadas
+Route::get('Embarazadas/Municipio/allmunicipios','EmbaradasController@allmunicipios');
+
+Route::get('Embarazadas/36semanas','EmbaradasController@semanas');

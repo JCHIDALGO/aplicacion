@@ -13,6 +13,43 @@ class EmbaradasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+public function semanas(){
+
+$semanas= Embarazada::whereRaw(tembarazadas.fum->addWeeks(36),'<', Carbon::now());
+
+
+
+   // $query = "select * from table where date between '$from' and '$to'";
+
+
+  //  $date = date("Y-m-d", strtotime("+1 day", $lastdate))
+
+//$fecha ='2013-12-16';
+
+
+//$mas_semanas  = DB::select('select * from tembarazadas where date('fum', strtotime('+36 week') < strtotime("now"))');
+ 
+//$fecha10diasdespues = date('Y-m-d',strtotime('+36 weeks', strtotime($fecha)));
+
+return response()->json($semanas);
+
+}
+    public function allmunicipios(){
+    $allmunicipios = Embarazada::select('locmun')->distinct()->get();
+     
+     return response()->json($allmunicipios);
+
+
+    }
+
+    public function municipio($municipio){
+
+
+    $embarzadas_municipio = Embarazada::where('locmun',$municipio)->get();
+    return response()->json($embarzadas_municipio);
+    }
+
     public function index()
     {
         // 
@@ -26,19 +63,27 @@ class EmbaradasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+   /*
+    $mas_semanas= Embarazada::whereBetween(DB::raw('TIMESTAMPDIFF(YEAR,tembarazadas.fnacimiento,CURDATE())'), [$from, $to])->get();
+return response()->json(['rango_edades'=>$usuariosEntre20Y30]); */
+
+//$dt->addWeeks(3);     
+//date('Y-m-d', strtotime('+5 week'))             
+
+//$mas_semanas = Embarazada::->whereRaw('date(fum, strtotime('+36 week')) = Carbon::now()');
+//where('fum',<,Carbon::now())->get();
+//$mas_semanas  = DB::select('select * from tembarazadas where date('fum', strtotime('+36 week') < strtotime("now"))');
+
+
+
+//$mas_semanas = Embarazada::where('fum', '<', Carbon::now());
+
+ 
+
 public function edad($from, $to){
-    //Carbon::diffInYears(Carbon $dt = null, $abs = true)
-//$users = User::whereBetween('fnacimiento', array(Carbon::createFromDate(2015, 4, 1), Carbon::createFromDate(2015, 4, 30)))->get();
-    
-//$usuariosEntre20Y30= Embarazada::agedBetween($from, $to)->get();
-   // $carbon = new Carbon();  
+   
     $usuariosEntre20Y30 = Embarazada::whereBetween(DB::raw('TIMESTAMPDIFF(YEAR,tembarazadas.fnacimiento,CURDATE())'), [$from, $to])->get();
-
-//$usuariosEntre20Y30 = Embarazada::whereBetween(, [$from, $to])->get();
-  
-
-
-
 return response()->json(['rango_edades'=>$usuariosEntre20Y30]);
 
 }
