@@ -14,34 +14,12 @@ class EmbaradasController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-public function semanas(){
-
-$semanas= Embarazada::whereRaw(tembarazadas.fum->addWeeks(36),'<', Carbon::now());
+public function todos(){
 
 
-
-   // $query = "select * from table where date between '$from' and '$to'";
-
-
-  //  $date = date("Y-m-d", strtotime("+1 day", $lastdate))
-
-//$fecha ='2013-12-16';
-
-
-//$mas_semanas  = DB::select('select * from tembarazadas where date('fum', strtotime('+36 week') < strtotime("now"))');
- 
-//$fecha10diasdespues = date('Y-m-d',strtotime('+36 weeks', strtotime($fecha)));
-
-return response()->json($semanas);
-
+    $municipios = Embarazada::select('locmun')->distinct()->get();
+    return response()->json($municipios);
 }
-    public function allmunicipios(){
-    $allmunicipios = Embarazada::select('locmun')->distinct()->get();
-     
-     return response()->json($allmunicipios);
-
-
-    }
 
     public function municipio($municipio){
 
@@ -64,20 +42,7 @@ return response()->json($semanas);
      * @return \Illuminate\Http\Response
      */
 
-   /*
-    $mas_semanas= Embarazada::whereBetween(DB::raw('TIMESTAMPDIFF(YEAR,tembarazadas.fnacimiento,CURDATE())'), [$from, $to])->get();
-return response()->json(['rango_edades'=>$usuariosEntre20Y30]); */
-
-//$dt->addWeeks(3);     
-//date('Y-m-d', strtotime('+5 week'))             
-
-//$mas_semanas = Embarazada::->whereRaw('date(fum, strtotime('+36 week')) = Carbon::now()');
-//where('fum',<,Carbon::now())->get();
-//$mas_semanas  = DB::select('select * from tembarazadas where date('fum', strtotime('+36 week') < strtotime("now"))');
-
-
-
-//$mas_semanas = Embarazada::where('fum', '<', Carbon::now());
+ 
 
  
 
