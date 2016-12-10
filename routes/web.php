@@ -18,7 +18,10 @@ Route::resource('Embarazadas','EmbaradasController');
 //Obtener todas las puerperas
 Route::resource('Puerperas','PuerperasController');
 
-Route::resource('distintas','EmbaradasController@censadas_unidad');
+Route::get('distintas','EmbaradasController@censadas_unidad');
+
+
+Route::get('concentradosGenerales','EmbaradasController@concentradosGenerales');
 
 // en esta query se obtiene todas las embarada en base al expeiente pasado como parametro
 Route::get('DetalleEmbarazada/{expediente}','EmbaradasController@detalle');

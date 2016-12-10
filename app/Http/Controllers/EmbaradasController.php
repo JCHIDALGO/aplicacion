@@ -154,7 +154,7 @@ return response()->json(['Bajo Riesgo'=>$totalBajoRiesgo,'Mediano Riesgo'=>$tota
      $Renuentes = Embarazada::where('clues',$buscar->clues)->where('estatus','Renuente')->count();
      $Foranea= Embarazada::where('clues',$buscar->clues)->where('estatus','Foranea')->count();
 
-     $bajoRiesgo=Embarazada::where('clues',$buscar->clues)->whereBetween('riesgo',[0,4])->count();
+     $bajoRiesgo=Embarazada::where('clues',$buscar->clues)->whereBetween('riesgo',[1,4])->count();
      $medioRiesgo=Embarazada::where('clues',$buscar->clues)->whereBetween('riesgo',[5,8])->count();
      $altoRiesgo=Embarazada::where('clues',$buscar->clues)->where('riesgo','>',8)->count();
     
@@ -171,6 +171,34 @@ return response()->json(['Bajo Riesgo'=>$totalBajoRiesgo,'Mediano Riesgo'=>$tota
 
     
    return response()->json($datos);
+
+    }
+
+
+
+public function concentradosGenerales(){
+
+
+    $censadas = Embarazada::all()->count();
+    $activas = Embarazada::where('estatus','Activa')->count();
+    $bajas = Embarazada::where('estatus','Baja')->count();
+    $Renuentes = Embarazada::where('estatus','Renuente')->count();
+    $Foranea= Embarazada::where('estatus','Foranea')->count();
+    $sinRiesgo=Embarazada::where('riesgo','=',0)->count();
+    $bajoRiesgo=Embarazada::whereBetween('riesgo',[1,4])->count();
+    $medioRiesgo=Embarazada::whereBetween('riesgo',[5,8])->count();
+    $altoRiesgo=Embarazada::where('riesgo','>',8)->count();
+
+    $menores15 = Embarazada::where(DB::raw('TIMESTAMPDIFF(YEAR,tembarazadas.fnacimiento,CURDATE())'),'<',15)->count();  
+
+     $mayores35 = Embarazada::where(DB::raw('TIMESTAMPDIFF(YEAR,tembarazadas.fnacimiento,CURDATE())'),'>',35)->count();
+
+
+     $daticos[] = collect(['censadas'=>$censadas,'Activas'=>$activas,'Baja'=>$bajas,'Renuentes'=>$Renuentes,'Foranea'=>$Foranea,'bajoRiesgo'=>$bajoRiesgo,'medioRiesgo'=>$medioRiesgo,'altoRiesgo'=>$altoRiesgo,'menores15'=>$menores15,'mayores35'=>$mayores35]);
+
+
+    return response()->json($daticos);
+
 
     }
 }
