@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Embarazada;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\tussModel;
 class EmbaradasController extends Controller
 {
     /**
@@ -60,6 +61,8 @@ $altoRiesgo= Embarazada::where('riesgo','>=',8)->get();
 $totalBajoRiesgo = $bajoRiesgo->count();
 $totalMedianoRiesgo = $medianoRiesgo->count();
 $totalAltoRiesgo = $altoRiesgo->count();
+
+
 return response()->json(['Bajo Riesgo'=>$totalBajoRiesgo,'Mediano Riesgo'=>$totalMedianoRiesgo,'Alto Riesgo'=>$totalAltoRiesgo ]);
 
 }
@@ -133,5 +136,41 @@ return response()->json(['Bajo Riesgo'=>$totalBajoRiesgo,'Mediano Riesgo'=>$tota
     public function destroy($id)
     {
         //
+    }
+
+    public function censadas_unidad(){
+
+    $distintas_clues=Embarazada::select('clues')->distinct()->get();
+
+    foreach ($distintas_clues as $buscar) {
+     //$collection = collect(["", 2, 3]);
+
+     $nombre_clues = tussModel::select('nombreu')->where('clues',$buscar->clues)->first();
+     //$nombre_clues1=$nombre_clues->nombreu;
+     $contadores = Embarazada::where('clues',$buscar->clues)->count();
+
+     $activas = Embarazada::where('clues',$buscar->clues)->where('estatus','Activa')->count();
+     $bajas = Embarazada::where('clues',$buscar->clues)->where('estatus','Baja')->count();
+     $Renuentes = Embarazada::where('clues',$buscar->clues)->where('estatus','Renuente')->count();
+     $Foranea= Embarazada::where('clues',$buscar->clues)->where('estatus','Foranea')->count();
+
+     $bajoRiesgo=Embarazada::where('clues',$buscar->clues)->whereBetween('riesgo',[0,4])->count();
+     $medioRiesgo=Embarazada::where('clues',$buscar->clues)->whereBetween('riesgo',[5,8])->count();
+     $altoRiesgo=Embarazada::where('clues',$buscar->clues)->where('riesgo','>',8)->count();
+    
+
+     $menores15 = Embarazada::where(DB::raw('TIMESTAMPDIFF(YEAR,tembarazadas.fnacimiento,CURDATE())'),'<',15)->count();  
+
+     $mayores35 = Embarazada::where(DB::raw('TIMESTAMPDIFF(YEAR,tembarazadas.fnacimiento,CURDATE())'),'>',35)->count();
+ 
+
+     $datos[] = collect(['nombre'=>$buscar->clues,'total'=>$contadores,'NombreClues'=>$nombre_clues,'Activas'=>$activas,'Baja'=>$bajas,'Renuentes'=>$Renuentes,'Foranea'=>$Foranea,'bajoRiesgo'=>$bajoRiesgo,'medioRiesgo'=>$medioRiesgo,'altoRiesgo'=>$altoRiesgo,'menores15'=>$menores15,'mayores35'=>$mayores35]);
+
+   
+    }
+
+    
+   return response()->json($datos);
+
     }
 }
