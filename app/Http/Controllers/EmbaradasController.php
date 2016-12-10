@@ -159,9 +159,9 @@ return response()->json(['Bajo Riesgo'=>$totalBajoRiesgo,'Mediano Riesgo'=>$tota
      $altoRiesgo=Embarazada::where('clues',$buscar->clues)->where('riesgo','>',8)->count();
     
 
-     $menores15 = Embarazada::where(DB::raw('TIMESTAMPDIFF(YEAR,tembarazadas.fnacimiento,CURDATE())'),'<',15)->count();  
+     $menores15 = Embarazada::where('clues',$buscar->clues)->where(DB::raw('TIMESTAMPDIFF(YEAR,tembarazadas.fnacimiento,CURDATE())'),'<',15)->count();  
 
-     $mayores35 = Embarazada::where(DB::raw('TIMESTAMPDIFF(YEAR,tembarazadas.fnacimiento,CURDATE())'),'>',35)->count();
+     $mayores35 = Embarazada::where('clues',$buscar->clues)->where(DB::raw('TIMESTAMPDIFF(YEAR,tembarazadas.fnacimiento,CURDATE())'),'>',35)->count();
  
 
      $datos[] = collect(['nombre'=>$buscar->clues,'total'=>$contadores,'NombreClues'=>$nombre_clues,'Activas'=>$activas,'Baja'=>$bajas,'Renuentes'=>$Renuentes,'Foranea'=>$Foranea,'bajoRiesgo'=>$bajoRiesgo,'medioRiesgo'=>$medioRiesgo,'altoRiesgo'=>$altoRiesgo,'menores15'=>$menores15,'mayores35'=>$mayores35]);
